@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'ubuntu latest'
 
 variables:
   buildConfiguration: 'Release'
@@ -16,21 +16,18 @@ variables:
 # in your pipeline or by using the .NET Core task.
 
 # dotnet build
-#steps:
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
+steps:
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+- script: dotnet publish --output $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
 
 # .NET Core task
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: '--configuration Release' # Update this to match your need
-# do this after other tasks such as building
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+#steps:
+#- task: DotNetCoreCLI@2
+#  displayName: Build
+#  inputs:
+#    command: build
+#    projects: '**/*.csproj'
+#    arguments: '--configuration Release' # Update this to match your need
+
