@@ -21,21 +21,16 @@ variables:
 #  displayName: 'dotnet build $(buildConfiguration)'
 
 # .NET Core task
-#steps:
-#- task: DotNetCoreCLI@2
-#  displayName: Build
-#  inputs:
-#    command: build
-#    projects: '**/*.csproj'
-#    arguments: '--configuration Release' # Update this to match your need
-
-# You can run any custom dotnet command in your pipeline. The following example shows
-# how to install and use a .NET global tool, dotnetsay:
 steps:
 - task: DotNetCoreCLI@2
-  displayName: 'Install dotnetsay'
+  displayName: Build
   inputs:
-    command: custom
+    command: build
     projects: '**/*.csproj'
-    custom: tool
-    arguments: 'install -g dotnetsay'
+    arguments: '--configuration Release' # Update this to match your need
+# do this after other tasks such as building
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
