@@ -12,6 +12,19 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
+# You build your .NET Core project either by running the dotnet build command
+# in your pipeline or by using the .NET Core task.
+
+# dotnet build
+#steps:
+#- script: dotnet build --configuration $(buildConfiguration)
+#  displayName: 'dotnet build $(buildConfiguration)'
+
+# .NET Core task
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release' # Update this to match your need
